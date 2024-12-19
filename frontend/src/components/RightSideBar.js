@@ -4,7 +4,7 @@ import Avatar from "react-avatar";
 
 const RightSideBar = () => {
   return (
-    <div className="w-[25%] ">
+    <div className="w-[25%] mt-4">
       <div className="p-2 bg-gray-100 rounded-full outline-none flex items-center hover:cursor-pointer w-full">
         <CiSearch size={"25px"} />
         <input

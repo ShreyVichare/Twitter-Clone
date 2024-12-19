@@ -7,7 +7,7 @@ import { CiBookmark } from "react-icons/ci";
 import { CiLogout } from "react-icons/ci";
 const LeftSideBar = () => {
   return (
-    <div className="w-[20%]">
+    <div className="w-[20%] mt-4">
       <div>
         <div>
           <img
