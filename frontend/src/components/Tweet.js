@@ -5,7 +5,7 @@ import { CiBookmark } from "react-icons/ci";
 import { VscComment } from "react-icons/vsc";
 const Tweet = () => {
   return (
-    <div>
+    <div className="border-b border-b-gray-200">
       <div>
         <div className="flex p-4">
           <Avatar src="./pfp1.webp" size="40" round={true} />

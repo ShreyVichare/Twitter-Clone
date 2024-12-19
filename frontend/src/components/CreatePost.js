@@ -30,8 +30,11 @@ const CreatePost = () => {
             />
           </div>
           <div className="flex items-center justify-between p-4 border-b border-gray-300">
-            <div>
-              <CiImageOn />
+            <div className="items-center">
+              <CiImageOn
+                size={"38px"}
+                className="hover:bg-slate-200 rounded-full hover:cursor-pointer p-2"
+              />
             </div>
             <div className=" ">
               <button className=" bg-[#1D9BF0] px-4 text-lg text-white  py-1 border border-none rounded-full ">
