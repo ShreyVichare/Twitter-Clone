@@ -24,7 +24,7 @@ const userSchema = new mongoose.Schema(
       type: Array,
       default: [],
     },
-    followings: {
+    following: {
       type: Array,
       default: [],
     },
@@ -33,8 +33,6 @@ const userSchema = new mongoose.Schema(
       default: [],
     },
   },
-
   { timestamps: true }
 );
-
 export const User = mongoose.model("User", userSchema);
