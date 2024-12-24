@@ -23,7 +23,7 @@ export const Register = async (req, res) => {
       });
     }
 
-    const hashedPassword = await bcrptjs.hash(password, 16);
+    const hashedPassword = await bcryptjs.hash(password, 16);
     await User.create({
       name,
       username,
@@ -92,4 +92,107 @@ export const Logout = (req, res) => {
     message: "User logged out  successfully",
     success: true,
   });
+};
+
+export const bookmark = async (req, res) => {
+  try {
+    const loggedInUserId = req.body.id;
+    const tweetId = req.params.id;
+    const user = await User.findById(loggedInUserId);
+
+    if (user.bookmarks.includes(tweetId)) {
+      //remove
+      await User.findByIdAndUpdate(loggedInUserId, {
+        $pull: { bookmarks: tweetId },
+      });
+
+      return res.status(200).json({
+        message: "Remove from bookmark",
+      });
+    } else {
+      //bookmark
+      await User.findByIdAndUpdate(loggedInUserId, {
+        $push: { bookmarks: tweetId },
+      });
+
+      return res.status(200).json({
+        message: "Saved to bookmark",
+      });
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getMyProfile = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const user = await User.findById(id).select("-password");
+
+    return res.status(200).json({
+      user,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getOtherUsers = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const otherUsers = await User.find({ _id: { $ne: id } }).select(
+      "-password"
+    );
+
+    if (!otherUsers) {
+      return res.status(401).json({
+        message: "currently do not have any users.",
+      });
+    }
+
+    return res.status(200).json({
+      otherUsers,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const follow = async (req, res) => {
+  try {
+    const loggedInUserId = req.body.id; //shrey
+    const userId = req.params.id; //prakash
+
+    const loggedInUser = await User.findById(loggedInUserId);
+    const user = await User.findById(userId); //prakash
+
+    if (!user.followers.includes(loggedInUserId)) {
+      await user.updateOne({ $push: { followers: loggedInUserId } });
+
+      await loggedInUser.updateOne({ $push: { following: userId } });
+    } else {
+      return res.status(400).json({
+        message: `User already followed to ${user.username}`,
+      });
+    }
+
+    return res.status(200).json({
+      message: `${loggedInUser.username} just follow to ${user.username}`,
+      success: true,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const unfollow = async (req, res) => {
+  try {
+    const loggedInUserId = req.body.id; //shrey
+    const userId = req.params.id; //prakash
+
+    const loggedInUser = await User.findById(loggedInUserId); //shrey
+    const user = await await User.findById(userId); //prakash
+  } catch (error) {
+    console.log(error);
+  }
 };
