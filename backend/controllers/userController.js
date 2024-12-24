@@ -190,8 +190,23 @@ export const unfollow = async (req, res) => {
     const loggedInUserId = req.body.id; //shrey
     const userId = req.params.id; //prakash
 
-    const loggedInUser = await User.findById(loggedInUserId); //shrey
-    const user = await await User.findById(userId); //prakash
+    const loggedInUser = await User.findById(loggedInUserId);
+    const user = await User.findById(userId); //prakash
+
+    if (loggedInUser.following.includes(userId)) {
+      await user.updateOne({ $pull: { followers: loggedInUserId } });
+
+      await loggedInUser.updateOne({ $pull: { following: userId } });
+    } else {
+      return res.status(400).json({
+        message: `User has not followed yet`,
+      });
+    }
+
+    return res.status(200).json({
+      message: `${loggedInUser.username} unfollow to ${user.username}`,
+      success: true,
+    });
   } catch (error) {
     console.log(error);
   }
