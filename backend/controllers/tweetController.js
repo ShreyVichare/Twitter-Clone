@@ -71,13 +71,32 @@ export const getAllTweet = async (req, res) => {
 
     const loggedInUserTweets = await Tweet.find({ userId: id });
     const followingUserTweets = await Promise.all(
-      loggedInUser.following.map((otherusersId) => {
-        return Tweet.find({ userId: otherusersId });
+      loggedInUser.following.map((otherUsersId) => {
+        return Tweet.find({ userId: otherUsersId });
       })
     );
 
     return res.status(200).json({
       tweets: loggedInUserTweets.concat(...followingUserTweets),
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getFollowingTweets = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const loggedInUser = await User.findById(id);
+
+    const followingUserTweets = await Promise.all(
+      loggedInUser.following.map((otherUsersId) => {
+        return Tweet.find({ userId: otherUsersId });
+      })
+    );
+
+    return res.status(200).json({
+      tweets: [].concat(...followingUserTweets),
     });
   } catch (error) {
     console.log(error);

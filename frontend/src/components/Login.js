@@ -10,7 +10,12 @@ const Login = () => {
     <div className="w-screen h-screen flex items-center justify-center">
       <div className="flex items-center justify-evenly w-[80%]">
         <div>
-          <img src="Twitter-logo.png" width={"300px"} className="ml-5" />
+          <img
+            src="Twitter-logo.png"
+            width={"300px"}
+            className="ml-5"
+            alt="Twitter Logo"
+          />
         </div>
         <div>
           <div className="my-5 ">
