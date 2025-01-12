@@ -1,13 +1,13 @@
 import React from "react";
 import { IoMdArrowBack } from "react-icons/io";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import Avatar from "react-avatar";
 import useGetProfile from "../hooks/useGetProfile";
 import { useSelector } from "react-redux";
 const Profile = () => {
   const { user, profile } = useSelector((store) => store.user);
-
-  useGetProfile(user?._id);
+  const { id } = useParams();
+  useGetProfile(id);
   return (
     <div className="w-[50%] border-l border-r border-gray-200">
       <div className="">
@@ -23,9 +23,9 @@ const Profile = () => {
             <p className="text-gray-500 text-sm">10 post</p>
           </div>
         </div>
-        <img src="./cover-1.jpeg" alt="banner" />
+        <img src="/cover-1.jpeg" alt="banner" />
         <div className="absolute ml-2 top-52 border-4 border-white rounded-full">
-          <Avatar src="./pfp2.webp" size="120" round={true} />
+          <Avatar src="/pfp2.webp" size="120" round={true} />
         </div>
         <div className="text-right m-4 ">
           <button className="px-4 py-1 hover:bg-gray-200 rounded-full  border border-gray-400">
