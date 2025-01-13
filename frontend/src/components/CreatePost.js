@@ -5,7 +5,7 @@ import { CiImageOn } from "react-icons/ci";
 import { TWEET_API_END_POINT } from "../utils/constant";
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
-import { getRefresh } from "../redux/tweetSlice";
+import { getAllTweets, getRefresh } from "../redux/tweetSlice";
 const CreatePost = () => {
   const [description, setDescription] = useState("");
   const { user } = useSelector((store) => store.user);
@@ -29,6 +29,18 @@ const CreatePost = () => {
 
     setDescription("");
   };
+  const followingTweetHandler = async () => {
+    const id = user?._id;
+    try {
+      const res = await axios.get(
+        `${TWEET_API_END_POINT}/followingtweet/${user?._id}`
+      );
+      console.log(res);
+      dispatch(getAllTweets(res.data.tweets));
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <div className="w-full">
       <div className="">
@@ -39,7 +51,7 @@ const CreatePost = () => {
               For You
             </h1>
           </div>
-          <div className="text-center w-full">
+          <div onClick={followingTweetHandler} className="text-center w-full">
             <h1 className="font-semibold text-gray-600 text-lg cursor-pointer hover:bg-gray-200  p-2">
               Following
             </h1>
