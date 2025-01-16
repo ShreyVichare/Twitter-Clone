@@ -5,10 +5,11 @@ import { CiImageOn } from "react-icons/ci";
 import { TWEET_API_END_POINT } from "../utils/constant";
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllTweets, getRefresh } from "../redux/tweetSlice";
+import { getAllTweets, getIsActive, getRefresh } from "../redux/tweetSlice";
 const CreatePost = () => {
   const [description, setDescription] = useState("");
   const { user } = useSelector((store) => store.user);
+  const { isActive } = useSelector((store) => store.tweet);
   const dispatch = useDispatch();
   const submitHandler = async () => {
     try {
@@ -29,29 +30,38 @@ const CreatePost = () => {
 
     setDescription("");
   };
-  const followingTweetHandler = async () => {
-    const id = user?._id;
-    try {
-      const res = await axios.get(
-        `${TWEET_API_END_POINT}/followingtweet/${user?._id}`
-      );
-      console.log(res);
-      dispatch(getAllTweets(res.data.tweets));
-    } catch (error) {
-      console.log(error);
-    }
+
+  const forYouHandler = () => {
+    dispatch(getIsActive(true));
+  };
+  const followingHandler = () => {
+    dispatch(getIsActive(false));
   };
   return (
     <div className="w-full">
       <div className="">
         {/* Navigation Section */}
-        <div className="flex justify-around mb-4 border-b border-gray-200 ">
-          <div className="text-center w-full">
+        <div className="flex  justify-around mb-4 border-b border-gray-200 ">
+          <div
+            onClick={forYouHandler}
+            className={`${
+              isActive
+                ? "border-b-4 border-blue-600"
+                : "border-b-4 border-transparent"
+            } text-center w-full`}
+          >
             <h1 className="font-semibold text-gray-600 text-lg cursor-pointer hover:bg-gray-200  p-2 ">
               For You
             </h1>
           </div>
-          <div onClick={followingTweetHandler} className="text-center w-full">
+          <div
+            onClick={followingHandler}
+            className={` ${
+              !isActive
+                ? "border-b-4 border-blue-600"
+                : "border-b-4 border-transparent"
+            } text-center w-full`}
+          >
             <h1 className="font-semibold text-gray-600 text-lg cursor-pointer hover:bg-gray-200  p-2">
               Following
             </h1>
