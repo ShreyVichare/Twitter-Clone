@@ -20,7 +20,7 @@ const userSlice = createSlice({
       state.profile = action.payload;
     },
     followingUpdate: (state, action) => {
-      //infollow
+      //unfollow
       if (state.user.following.includes(action.payload)) {
         state.user.following = state.user.following.filter((itemId) => {
           return itemId !== action.payload;
