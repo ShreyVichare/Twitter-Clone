@@ -26,7 +26,7 @@ const RightSideBar = ({ otherUsers }) => {
             >
               <div className="flex">
                 <div>
-                  <Avatar src="./pfp3.jpg" size="40" round={true} />
+                  <Avatar src={user?.profilePhoto} size="40" round={true} />
                 </div>
                 <div className="ml-2">
                   <h1 className="font-bold ">{user?.name}</h1>

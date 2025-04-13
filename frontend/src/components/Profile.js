@@ -61,12 +61,15 @@ const Profile = () => {
           </Link>
           <div className="ml-2">
             <h1 className="font-bold text-lg">{profile?.name}</h1>
-            <p className="text-gray-500 text-sm">10 post</p>
           </div>
         </div>
-        <img src="/cover-1.jpeg" alt="banner" />
+        <img
+          src={profile?.coverPhoto}
+          alt="banner"
+          className="h-[250px] w-full object-cover"
+        />
         <div className="absolute ml-2 top-52 border-4 border-white rounded-full">
-          <Avatar src="/pfp2.webp" size="120" round={true} />
+          <Avatar src={profile?.profilePhoto} size="120" round={true} />
         </div>
         <div className="text-right m-4 ">
           {profile?._id === user?._id ? (
@@ -87,7 +90,7 @@ const Profile = () => {
           <p>@{profile?.username}</p>
         </div>
         <div className="m-4 text-sm">
-          <p>Turning Ideas into Amazing Websites</p>
+          <p>{profile?.bio}</p>
         </div>
       </div>
     </div>

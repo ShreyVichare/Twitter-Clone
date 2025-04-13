@@ -4,7 +4,7 @@ import jwt from "jsonwebtoken";
 
 export const Register = async (req, res) => {
   try {
-    const { name, username, email, password } = req.body;
+    const { name, username, email, password, profilePhoto } = req.body;
 
     //basic validation
     if (!name || !username || !email || !password) {
@@ -29,6 +29,7 @@ export const Register = async (req, res) => {
       username,
       email,
       password: hashedPassword,
+      profilePhoto,
     });
 
     return res.status(201).json({
