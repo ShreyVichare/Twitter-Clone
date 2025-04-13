@@ -1,5 +1,5 @@
 import axios from "axios";
-import React from "react";
+import React, { useState } from "react";
 import Avatar from "react-avatar";
 import { CiHeart, CiBookmark } from "react-icons/ci";
 import { VscComment } from "react-icons/vsc";
@@ -12,6 +12,7 @@ import { getRefresh } from "../redux/tweetSlice";
 const Tweet = ({ tweet }) => {
   const dispatch = useDispatch();
   const { user } = useSelector((store) => store.user);
+  const [imageError, setImageError] = useState(false); // Track if the image fails to load
 
   // Handle like or dislike
   const likeOrDislikeHandler = async (id) => {
@@ -24,7 +25,10 @@ const Tweet = ({ tweet }) => {
       dispatch(getRefresh());
       toast.success(res.data.message);
     } catch (error) {
-      toast.error(error.response?.data?.message || "An error occurred.");
+      console.error("Error in likeOrDislikeHandler:", error);
+      toast.error(
+        error.response?.data?.message || "Failed to like/dislike tweet."
+      );
     }
   };
 
@@ -37,7 +41,8 @@ const Tweet = ({ tweet }) => {
       dispatch(getRefresh());
       toast.success(res.data.message);
     } catch (error) {
-      toast.error(error.response?.data?.message || "An error occurred.");
+      console.error("Error in deleteTweetHandler:", error);
+      toast.error(error.response?.data?.message || "Failed to delete tweet.");
     }
   };
 
@@ -48,33 +53,46 @@ const Tweet = ({ tweet }) => {
           {/* User Avatar */}
           <Avatar
             src={
-              tweet?.userDetails[0]?.profilePhoto ||
+              tweet?.userDetails?.[0]?.profilePhoto ||
               "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
             }
             size="40"
             round={true}
+            onError={() => {
+              console.log("Avatar failed to load, using fallback.");
+              return true; // Use fallback image
+            }}
           />
           <div className="ml-2 w-full">
             {/* User Info */}
             <div className="flex items-center">
-              <h1 className="font-bold">{tweet?.userDetails[0]?.name}</h1>
+              <h1 className="font-bold">
+                {tweet?.userDetails?.[0]?.name || "Unknown User"}
+              </h1>
               <p className="text-gray-500 text-sm ml-1">
-                @{tweet?.userDetails[0]?.username} · 1m
+                @{tweet?.userDetails?.[0]?.username || "unknown"} · 1m
               </p>
             </div>
             {/* Tweet Description */}
             <div>
-              <p>{tweet?.description}</p>
+              <p>{tweet?.description || "No description available."}</p>
             </div>
             {/* Tweet Image */}
-            {tweet?.image && (
+            {tweet?.image && !imageError && (
               <div className="my-3">
                 <img
                   src={tweet.image}
                   alt="Tweet"
                   className="w-full rounded-lg object-cover"
+                  onError={() => {
+                    console.error("Tweet image failed to load:", tweet.image);
+                    setImageError(true); // Hide image if it fails to load
+                  }}
                 />
               </div>
+            )}
+            {imageError && tweet?.image && (
+              <p className="text-red-500 text-sm my-3">Failed to load image.</p>
             )}
             {/* Tweet Actions */}
             <div className="flex justify-between my-3">

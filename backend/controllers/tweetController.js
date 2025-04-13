@@ -239,3 +239,42 @@ export const getFollowingTweets = async (req, res) => {
     });
   }
 };
+
+// Get user's own tweets
+export const getOwnTweets = async (req, res) => {
+  try {
+    const loggedInUserId = req.user._id; // Assuming you have middleware to attach the logged-in user to req.user
+
+    if (!loggedInUserId) {
+      return res.status(400).json({
+        message: "Logged-in user ID is required.",
+        success: false,
+      });
+    }
+
+    // Fetch tweets created by the logged-in user
+    const userTweets = await Tweet.find({ userId: loggedInUserId }).sort({
+      createdAt: -1,
+    });
+
+    if (!userTweets || userTweets.length === 0) {
+      return res.status(404).json({
+        message: "No tweets found for this user.",
+        success: false,
+      });
+    }
+
+    return res.status(200).json({
+      message: "User's tweets fetched successfully.",
+      success: true,
+      tweets: userTweets,
+    });
+  } catch (error) {
+    console.error("Error in getOwnTweets:", error);
+    return res.status(500).json({
+      message: "Server error while fetching user's tweets.",
+      success: false,
+      error: error.message,
+    });
+  }
+};

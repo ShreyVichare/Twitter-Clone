@@ -18,6 +18,10 @@ const Body = () => {
           path: "/profile/:id",
           element: <Profile />,
         },
+        {
+          path: "/profile/update/:id",
+          element: <Profile />,
+        },
       ],
     },
     {
