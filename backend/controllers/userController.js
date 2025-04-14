@@ -213,3 +213,42 @@ export const unfollow = async (req, res) => {
     console.log(error);
   }
 };
+
+export const updateProfile = async (req, res) => {
+  try {
+    const { id } = req.params; // User ID from the request parameters
+    const { name, username, bio, profilePhoto, coverPhoto } = req.body; // Fields to update
+
+    // Validate if the user exists
+    const user = await User.findById(id);
+    if (!user) {
+      return res.status(404).json({
+        message: "User not found.",
+        success: false,
+      });
+    }
+
+    // Update the user's profile fields
+    if (name) user.name = name;
+    if (username) user.username = username;
+    if (bio) user.bio = bio;
+    if (profilePhoto) user.profilePhoto = profilePhoto;
+    if (coverPhoto) user.coverPhoto = coverPhoto;
+
+    // Save the updated user
+    await user.save();
+
+    return res.status(200).json({
+      message: "Profile updated successfully.",
+      success: true,
+      user,
+    });
+  } catch (error) {
+    console.error("Error in updateProfile:", error);
+    return res.status(500).json({
+      message: "Server error while updating profile.",
+      success: false,
+      error: error.message,
+    });
+  }
+};

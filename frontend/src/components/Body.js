@@ -4,6 +4,7 @@ import Login from "./Login";
 import Home from "./Home";
 import Feed from "./Feed";
 import Profile from "./Profile";
+import { UpdateProfile } from "./UpdateProfile";
 const Body = () => {
   const appRouter = createBrowserRouter([
     {
@@ -20,7 +21,7 @@ const Body = () => {
         },
         {
           path: "/profile/update/:id",
-          element: <Profile />,
+          element: <UpdateProfile />,
         },
       ],
     },

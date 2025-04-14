@@ -70,7 +70,7 @@ const Tweet = ({ tweet }) => {
                 {tweet?.userDetails?.[0]?.name || "Unknown User"}
               </h1>
               <p className="text-gray-500 text-sm ml-1">
-                @{tweet?.userDetails?.[0]?.username || "unknown"} · 1m
+                @{tweet?.userDetails?.[0]?.username || "unknown"} ·{""}
               </p>
             </div>
             {/* Tweet Description */}
