@@ -36,10 +36,10 @@ const LeftSideBar = () => {
       <div>
         <div>
           <img
-            width={"24px"}
+            width={"70px"}
             className="ml-4"
-            src="./Twitter-logo.png"
-            alt="twitter-logo"
+            src="https://img.freepik.com/free-vector/twitter-new-2023-x-logo-white-background-vector_1017-45422.jpg?t=st=1744643182~exp=1744646782~hmac=8a5d845ef33aa5434b3d918dad2cc07a95bbdf5e7ad6c2715675ddfb1b100cf1&w=826"
+            alt="twitter-logo new"
           />
         </div>
         <div className="my-4">

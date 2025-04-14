@@ -154,44 +154,17 @@ export const likeOrDislike = async (req, res) => {
     });
   }
 };
-
-// Get all tweets (user's and following)
 export const getAllTweet = async (req, res) => {
   try {
-    const id = req.params.id;
-
-    if (!id) {
-      return res.status(400).json({
-        message: "User ID is required.",
-        success: false,
-      });
-    }
-
-    const loggedInUser = await User.findById(id);
-    if (!loggedInUser) {
-      return res.status(404).json({
-        message: "User not found.",
-        success: false,
-      });
-    }
-
-    const loggedInUserTweets = await Tweet.find({ userId: id });
-    const followingUserTweets = await Promise.all(
-      loggedInUser.following.map((otherUsersId) => {
-        return Tweet.find({ userId: otherUsersId });
-      })
-    );
-
-    const tweets = loggedInUserTweets.concat(...followingUserTweets);
-
+    const tweets = await Tweet.find().sort({ createdAt: -1 });
     return res.status(200).json({
       tweets,
       success: true,
     });
   } catch (error) {
-    console.error("Error in getAllTweet:", error);
+    console.error("Error in getEveryTweet:", error);
     return res.status(500).json({
-      message: "Server error while fetching tweets.",
+      message: "Server error while fetching all tweets.",
       success: false,
       error: error.message,
     });
